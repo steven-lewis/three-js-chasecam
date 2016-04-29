@@ -1,0 +1,28 @@
+{
+  "name": "three-js-chasecam",
+  "version": "0.0.1",
+  "description": "RequireJS module for making a THREE.js camera chase objects",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/karma start"
+  },
+  "keywords": [
+    "THREE.js",
+    "chase",
+    "camera"
+  ],
+  "author": "Steve Lewis",
+  "license": "ISC",
+  "dependencies": {
+    "expect.js": "^0.3.1",
+    "karma": "^0.13.22",
+    "mocha": "^2.4.5",
+    "requirejs": "^2.2.0",
+    "three": "^0.76.1"
+  },
+  "devDependencies": {
+    "karma-chrome-launcher": "^0.2.3",
+    "karma-mocha": "^0.2.2",
+    "karma-requirejs": "^0.2.6"
+  }
+}
