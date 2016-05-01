@@ -1,4 +1,12 @@
-define(["three"], function(THREE) {
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        define(['three'], factory);
+    } else if (typeof module === 'object' && module.exports) {
+        module.exports = factory(require('three'));
+    } else {
+        root.ThreeChaseCam = factory(root.THREE);
+    }
+}(this, function (THREE) {
 
     var GfxChasecam = {
 
@@ -120,6 +128,5 @@ define(["three"], function(THREE) {
 
     };
 
-
     return GfxChasecam;
-});
+}));
