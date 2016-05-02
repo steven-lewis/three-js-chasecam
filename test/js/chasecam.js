@@ -23,7 +23,7 @@ define(['three', 'js/chasecam'], function(THREE, GfxChasecam) {
             expect(cam.position).to.eql({x: 1, y:0, z:0});
         });
 
-        it('will slowly decelerate when inside leash length', function() {
+        it('will decelerate when inside leash length', function() {
 
             var cam = new THREE.PerspectiveCamera();
             var obj = new THREE.Object3D();
@@ -64,7 +64,26 @@ define(['three', 'js/chasecam'], function(THREE, GfxChasecam) {
             // after 1 second velocity will be max 
             GfxChasecam._updateVelocity(1.0);
             expect(GfxChasecam.velocity).to.eql({ x: 15, y: 0, z: 0 });
-        });        
+        });    
+
+        it('camera y position is locked', function() {
+
+            var cam = new THREE.PerspectiveCamera();
+            var obj = new THREE.Object3D();            
+
+            obj.position.set(110,10, 0);
+
+            // leash length 100 max
+            // max speed 30
+            // max accel 30
+
+            GfxChasecam.init(cam, 100, 30, 30, 1.2, 0.2).chase(obj);
+            GfxChasecam.velocity = new THREE.Vector3(0,0,0);
+
+            // after 1 second velocity will be max 
+            GfxChasecam._updateVelocity(1.0);
+            expect(GfxChasecam.velocity).to.eql({ x: 15, y: 0, z: 0 });
+        });              
 
         it('will be pulled by leash, faster when far outside leash', function() {
 
@@ -83,7 +102,27 @@ define(['three', 'js/chasecam'], function(THREE, GfxChasecam) {
             // after 1 second velocity will be max 
             GfxChasecam._updateVelocity(1.0);
             expect(GfxChasecam.velocity).to.eql({ x: 30, y: 0, z: 0 });
-        });               
+        });  
+
+        it('will not exceed max velocity', function() {
+
+            var cam = new THREE.PerspectiveCamera();
+            var obj = new THREE.Object3D();            
+
+            obj.position.set(150,0, 0);
+
+            // leash length 100 max
+            // max speed 30
+            // max accel 30
+
+            GfxChasecam.init(cam, 100, 20, 30, 1.2, 0.2).chase(obj);
+            GfxChasecam.velocity = new THREE.Vector3(0,0,0);
+
+            // after 1 second velocity will be max 
+            GfxChasecam._updateVelocity(1.0);
+            expect(GfxChasecam.velocity).to.eql({ x: 20, y: 0, z: 0 });
+        });   
+
     });
 
 });

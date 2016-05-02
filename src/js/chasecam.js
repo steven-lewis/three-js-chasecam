@@ -31,7 +31,21 @@ define(["three"], function(THREE) {
             this.elasticMargin  = elasticMargin;
             this.decay          = decay;
 
+            // lock the y position
+            this.lockY = true;
+
             return this;
+        },
+
+        /**
+         * lock the y position of the camera
+         * 
+         * @param  {[type]} lockY [description]
+         * @return {[type]}       [description]
+         */
+        setlockY: function(lockY) {
+
+            this.lockY = lockY;
         },
 
         /**
@@ -85,6 +99,10 @@ define(["three"], function(THREE) {
 
             var moveVector = this.object.position.clone().sub(this.camera.position);
 
+            // ignore locked dimensions
+            if(this.lockY)
+                moveVector.y = 0;
+
             // current length of the leash 
             var l = moveVector.length(), a;
             
@@ -105,7 +123,14 @@ define(["three"], function(THREE) {
                 a = moveVector.clone().normalize().multiplyScalar(this.maxAccel * delta);
             }
 
-            this.velocity.add(a);                
+            this.velocity.add(a);
+
+            var speed = this.velocity.length();
+
+            if(speed > this.maxSpeed) {
+
+                this.velocity.normalize().multiplyScalar(this.maxSpeed);
+            }                
         },
 
         /**
